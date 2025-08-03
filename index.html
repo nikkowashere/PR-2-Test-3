@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 0;
+      margin: 0;
+    }
+    .navbar {
+      background: #2c3e50;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 20px auto 30px auto;
+      text-align: center;
+      max-width: 900px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 1.1em;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    .main-container {
+      background: white;
+      padding: 40px 20px 30px 20px;
+      border-radius: 16px;
+      max-width: 900px;
+      margin: auto;
+      box-shadow: 0 0 16px rgba(0,0,0,0.07);
+      text-align: center;
+    }
+    .main-title {
+      font-size: 2.3em;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+    }
+    .main-subtitle {
+      color: #555;
+      font-size: 1.1em;
+      margin-bottom: 30px;
+    }
+    .attendance-section {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 30px 16px 20px 16px;
+      max-width: 600px;
+      margin: 40px auto 0 auto;
+    }
+    .login, .dashboard {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      max-width: none;
+      margin: 0;
+      box-shadow: none;
+    }
+    .student-list {
+      margin-top: 20px;
+    }
+    .student-list label {
+      display: block;
+      margin: 5px 0;
+    }
+    .date-header {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: none;
+      background: #2c3e50;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #34495e;
+    }
+    .hidden {
+      display: none;
+    }
+    .header-hero {
+      position: relative;
+      width: 100%;
+      min-height: 240px;
+      background: url('header-bg.jpg') center/cover no-repeat, #2c3e50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0 0 24px 24px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .header-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(44,62,80,0.60);
+      z-index: 1;
+    }
+    .header-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      text-align: center;
+      padding: 40px 10px 40px 10px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .header-content .main-title {
+      font-size: 2.5em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    }
+    .header-content .main-subtitle {
+      color: #e0e6ed;
+      font-size: 1.2em;
+      margin-bottom: 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .attendance-form-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+    }
+    .attendance-form-table th, .attendance-form-table td {
+      border: 1px solid #e3e8ee;
+      padding: 8px 6px;
+      text-align: center;
+    }
+    .attendance-form-table th {
+      background: #f7fafd;
+    }
+    .excused-label {
+      color: #3498db;
+      font-weight: 500;
+    }
+    .present-label {
+      color: #27ae60;
+      font-weight: 500;
+    }
+    .absent-label {
+      color: #e74c3c;
+      font-weight: 500;
+    }
+    .disabled-row {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .record-date-header {
+      font-weight: bold;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+    .date-capsule {
+      background: #f7fafd;
+      border: 1.5px solid #3498db;
+      color: #3498db;
+      border-radius: 18px;
+      padding: 7px 18px;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, border 0.18s;
+      outline: none;
+    }
+    .date-capsule:hover, .date-capsule:focus {
+      background: #3498db;
+      color: #fff;
+      border-color: #217dbb;
+    }
+    @media (max-width: 700px) {
+      .main-container, .navbar {
+        max-width: 98vw;
+        padding: 10px 2vw;
+      }
+      .attendance-section {
+        max-width: 98vw;
+      }
+      .header-content .main-title {
+        font-size: 1.5em;
+      }
+      .header-content .main-subtitle {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="navbar">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+    </div>
+    <div class="header-hero">
+      <div class="header-content">
+        <div class="main-title">Attendance Tracker</div>
+        <div class="main-subtitle">
+          Welcome! Please log in to mark or view attendance records.
+        </div>
+      </div>
+    </div>
+    <div class="main-container">
+      <div class="attendance-section">
+        <div id="login" class="login">
+          <h2>Login</h2>
+          <label>Role:
+            <select id="role">
+              <option value="secretary">Secretary</option>
+              <option value="teacher">Teacher</option>
+              <option value="parent">Parent</option>
+            </select>
+          </label><br>
+          <label>Username: <input type="text" id="username" /></label><br>
+          <label>Password: <input type="password" id="password" /></label><br>
+          <button onclick="login()">Login</button>
+        </div>
+        <div id="dashboard" class="dashboard hidden">
+          <h2>Attendance Dashboard (<span id="userRole"></span>)</h2>
+          <div id="notification" class="hidden"></div>
+          <div id="recordPanel" class="hidden"></div>
+          <div id="monthPanel" style="margin-top:24px;">
+            <label>Select Month:
+              <input type="month" id="monthSelect">
+            </label>
+            <button onclick="viewMonthRecords()">View Records</button>
+            <div id="monthDays"></div>
+            <div id="monthRecords"></div>
+          </div>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const students = ["Sacata", "Lozada", "Salvador", "Rodriguez", "Narag", "Peñares", "Perdon", "Paras", "Ulang", "Tuando", "Santos"];
+      let attendanceRecords = {}; // { "YYYY-MM": { "YYYY-MM-DD": { student: status, ... } } }
+      let currentUser = {};
+      let currentRole = "";
+      let currentEditDate = "";
+
+      function login() {
+        const role = document.getElementById("role").value;
+        const user = document.getElementById("username").value;
+        const pass = document.getElementById("password").value;
+        if ((role === "teacher" && user === "Teacher" && pass === "Teacher123") ||
+            (role === "secretary" && user === "Secretary" && pass === "Secretary123") ||
+            (role === "parent" && user === "Parent" && pass === "Parent123")) {
+          currentUser = { role, user };
+          currentRole = role;
+          document.getElementById("login").classList.add("hidden");
+          document.getElementById("dashboard").classList.remove("hidden");
+          document.getElementById("userRole").textContent = role;
+          loadRolePanel(role);
+        } else {
+          alert("Invalid credentials.");
+        }
+      }
+
+      function logout() {
+        currentUser = {};
+        currentRole = "";
+        document.getElementById("dashboard").classList.add("hidden");
+        document.getElementById("login").classList.remove("hidden");
+        clearAttendanceUI();
+      }
+
+      function loadRolePanel(role) {
+        document.getElementById("recordPanel").classList.remove("hidden");
+        document.getElementById("monthPanel").classList.remove("hidden");
+        // Set max date to today for secretary, unlimited for teacher
+        const dateInput = document.getElementById("attendanceDate");
+        const today = new Date().toISOString().split("T")[0];
+        if (role === "secretary") {
+          dateInput.max = today;
+        } else {
+          dateInput.removeAttribute("max");
+        }
+        dateInput.value = today;
+        document.getElementById("attendanceForm").innerHTML = "";
+        document.getElementById("saveAttendanceBtn").classList.add("hidden");
+        document.getElementById("updateAttendanceBtn").classList.add("hidden");
+        document.getElementById("deleteAttendanceBtn").classList.add("hidden");
+        document.getElementById("monthRecords").innerHTML = "";
+        if (role === "parent") {
+          // Hide recordPanel for parent, only show monthPanel
+          document.getElementById("recordPanel").classList.add("hidden");
+          document.getElementById("monthPanel").classList.remove("hidden");
+        } else {
+          document.getElementById("recordPanel").classList.remove("hidden");
+          document.getElementById("monthPanel").classList.remove("hidden");
+        }
+      }
+
+      function clearAttendanceUI() {
+        document.getElementById("attendanceForm").innerHTML = "";
+        document.getElementById("saveAttendanceBtn").classList.add("hidden");
+        document.getElementById("updateAttendanceBtn").classList.add("hidden");
+        document.getElementById("deleteAttendanceBtn").classList.add("hidden");
+        document.getElementById("monthRecords").innerHTML = "";
+      }
+
+      function loadAttendanceForm() {
+        const date = document.getElementById("attendanceDate").value;
+        if (!date) return;
+        currentEditDate = date;
+        const month = date.slice(0, 7);
+        if (!attendanceRecords[month]) attendanceRecords[month] = {};
+        const record = attendanceRecords[month][date];
+        let html = `<div class="record-date-header">Attendance for ${date}</div>`;
+        html += `<table class="attendance-form-table"><tr><th>Student</th><th>Present</th><th>Absent</th>`;
+        if (currentRole === "teacher") html += `<th>Excused</th>`;
+        html += `</tr>`;
+        students.forEach(name => {
+          let status = record ? record[name] : "";
+          html += `<tr${(currentRole === "secretary" && record) ? ' class="disabled-row"' : ''}>`;
+          html += `<td>${name}</td>`;
+          html += `<td><input type="radio" name="status_${name}" value="present"${status === "present" ? " checked" : ""}${(currentRole === "secretary" && record) ? " disabled" : ""}></td>`;
+          html += `<td><input type="radio" name="status_${name}" value="absent"${status === "absent" ? " checked" : ""}${(currentRole === "secretary" && record) ? " disabled" : ""}></td>`;
+          if (currentRole === "teacher") {
+            html += `<td><input type="radio" name="status_${name}" value="excused"${status === "excused" ? " checked" : ""}></td>`;
+          }
+          html += `</tr>`;
+        });
+        html += `</table>`;
+        document.getElementById("attendanceForm").innerHTML = html;
+        // Show correct buttons
+        if (currentRole === "secretary") {
+          if (record) {
+            document.getElementById("saveAttendanceBtn").classList.add("hidden");
+          } else {
+            document.getElementById("saveAttendanceBtn").classList.remove("hidden");
+          }
+          document.getElementById("updateAttendanceBtn").classList.add("hidden");
+          document.getElementById("deleteAttendanceBtn").classList.add("hidden");
+        } else if (currentRole === "teacher") {
+          if (record) {
+            document.getElementById("updateAttendanceBtn").classList.remove("hidden");
+            document.getElementById("deleteAttendanceBtn").classList.remove("hidden");
+            document.getElementById("saveAttendanceBtn").classList.add("hidden");
+          } else {
+            document.getElementById("saveAttendanceBtn").classList.remove("hidden");
+            document.getElementById("updateAttendanceBtn").classList.add("hidden");
+            document.getElementById("deleteAttendanceBtn").classList.add("hidden");
+          }
+        }
+      }
+
+      function saveAttendance() {
+        const date = currentEditDate;
+        const month = date.slice(0, 7);
+        if (!attendanceRecords[month]) attendanceRecords[month] = {};
+        if (attendanceRecords[month][date]) {
+          alert("Record already exists for this date.");
+          return;
+        }
+        const record = {};
+        let allMarked = true;
+        students.forEach(name => {
+          const radios = document.getElementsByName("status_" + name);
+          let marked = false;
+          for (let radio of radios) {
+            if (radio.checked) {
+              record[name] = radio.value;
+              marked = true;
+              break;
+            }
+          }
+          if (!marked) allMarked = false;
+        });
+        if (!allMarked) {
+          alert("Please mark attendance for all students.");
+          return;
+        }
+        attendanceRecords[month][date] = record;
+        alert("Attendance saved for " + date + "!");
+        loadAttendanceForm();
+      }
+
+      function updateAttendance() {
+        if (currentRole !== "teacher") return;
+        const date = currentEditDate;
+        const month = date.slice(0, 7);
+        if (!attendanceRecords[month] || !attendanceRecords[month][date]) {
+          alert("No record exists for this date.");
+          return;
+        }
+        const record = {};
+        let allMarked = true;
+        students.forEach(name => {
+          const radios = document.getElementsByName("status_" + name);
+          let marked = false;
+          for (let radio of radios) {
+            if (radio.checked) {
+              record[name] = radio.value;
+              marked = true;
+              break;
+            }
+          }
+          if (!marked) allMarked = false;
+        });
+        if (!allMarked) {
+          alert("Please mark attendance for all students.");
+          return;
+        }
+        attendanceRecords[month][date] = record;
+        alert("Attendance updated for " + date + "!");
+        loadAttendanceForm();
+      }
+
+      function deleteAttendance() {
+        if (currentRole !== "teacher") return;
+        const date = currentEditDate;
+        const month = date.slice(0, 7);
+        if (attendanceRecords[month] && attendanceRecords[month][date]) {
+          if (confirm("Are you sure you want to delete the record for " + date + "?")) {
+            delete attendanceRecords[month][date];
+            alert("Record deleted.");
+            document.getElementById("attendanceForm").innerHTML = "";
+            document.getElementById("updateAttendanceBtn").classList.add("hidden");
+            document.getElementById("deleteAttendanceBtn").classList.add("hidden");
+          }
+        }
+      }
+
+      function viewMonthRecords() {
+        const month = document.getElementById("monthSelect").value;
+        const role = currentRole;
+        if (!month) return;
+        // Show capsules for each day with a record
+        const daysDiv = document.getElementById("monthDays");
+        daysDiv.innerHTML = "";
+        document.getElementById("monthRecords").innerHTML = "";
+        if (!attendanceRecords[month] || Object.keys(attendanceRecords[month]).length === 0) {
+          daysDiv.innerHTML = "<p>No records for this month.</p>";
+          return;
+        }
+        const dates = Object.keys(attendanceRecords[month]).sort();
+        daysDiv.innerHTML = `<div style="margin:16px 0 18px 0;display:flex;flex-wrap:wrap;gap:10px;">` +
+          dates.map(date =>
+            `<button class="date-capsule" onclick="showDayRecord('${month}','${date}')">${date}</button>`
+          ).join("") +
+          `</div>`;
+      }
+
+      function showDayRecord(month, date) {
+        const role = currentRole;
+        const record = attendanceRecords[month][date];
+        let html = `<h3>Attendance for ${date}</h3>`;
+        html += `<table class="attendance-form-table"><tr><th>Student</th><th>Status</th></tr>`;
+        students.forEach(name => {
+          const status = record[name] || "";
+          let statusLabel = "";
+          if (status === "present") statusLabel = `<span class="present-label">Present</span>`;
+          else if (status === "absent") statusLabel = `<span class="absent-label">Absent</span>`;
+          else if (status === "excused") statusLabel = `<span class="excused-label">Excused</span>`;
+          else statusLabel = "-";
+          html += `<tr><td>${name}</td><td>${statusLabel}</td></tr>`;
+        });
+        html += `</table>`;
+        // For teacher/secretary, add a button to view/edit this record
+        if (role === "teacher" || role === "secretary") {
+          html += `<div style="margin-top:12px;"><button onclick="viewRecord('${date}')">View/Edit This Record</button></div>`;
+        }
+        document.getElementById("monthRecords").innerHTML = html;
+      }
+
+      function viewRecord(date) {
+        document.getElementById("attendanceDate").value = date;
+        loadAttendanceForm();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // On page load, set default month to current
+      window.addEventListener('DOMContentLoaded', () => {
+        const now = new Date();
+        document.getElementById("monthSelect").value = now.toISOString().slice(0,7);
+      });
+    </script>
+  </body>
+</html>
+</html>

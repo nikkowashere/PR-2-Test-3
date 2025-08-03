@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - Attendance Tracker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #eef2f6;
+      padding: 0;
+      margin: 0;
+    }
+    .navbar {
+      background: #fff;
+      padding: 16px 0 16px 0;
+      border-radius: 0 0 16px 16px;
+      margin: 0 auto 0 auto;
+      text-align: center;
+      max-width: 100vw;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .navbar a {
+      color: #2c3e50;
+      text-decoration: none;
+      margin: 0 22px;
+      font-size: 1.15em;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .navbar a:hover {
+      color: #3498db;
+      text-decoration: underline;
+    }
+    .header-hero {
+      position: relative;
+      width: 100%;
+      min-height: 240px;
+      background: url('header-bg.jpg') center/cover no-repeat, #2c3e50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0 0 24px 24px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .header-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(44,62,80,0.60);
+      z-index: 1;
+    }
+    .header-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      text-align: center;
+      padding: 40px 10px 40px 10px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .header-content .main-title {
+      font-size: 2.5em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    }
+    .header-content .main-subtitle {
+      color: #e0e6ed;
+      font-size: 1.2em;
+      margin-bottom: 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .main-container {
+      background: #fff;
+      padding: 36px 20px 30px 20px;
+      border-radius: 18px;
+      max-width: 950px;
+      margin: -60px auto 0 auto;
+      box-shadow: 0 4px 24px rgba(44,62,80,0.10);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 32px 28px;
+      justify-items: center;
+      margin: 36px 0 36px 0;
+    }
+    .team-member {
+      background: #f7fafd;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 22px 14px 18px 14px;
+      min-width: 160px;
+      max-width: 220px;
+      width: 100%;
+      transition: box-shadow 0.2s, transform 0.2s;
+      border: 1.5px solid #e3e8ee;
+    }
+    .team-member:hover {
+      box-shadow: 0 6px 24px rgba(52,152,219,0.13);
+      transform: translateY(-4px) scale(1.03);
+      border-color: #b6dfff;
+    }
+    .team-member img {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 14px;
+      background: #ddd;
+      border: 3px solid #e3e8ee;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+    }
+    .team-member .name {
+      font-weight: 600;
+      font-size: 1.13em;
+      margin-bottom: 2px;
+      color: #222;
+    }
+    .team-member .role {
+      color: #3498db;
+      font-size: 1em;
+      margin-bottom: 2px;
+      font-weight: 500;
+    }
+    .why-section {
+      margin-top: 30px;
+      background: #f7fafd;
+      border-radius: 14px;
+      padding: 28px 18px 18px 18px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+      border: 1.5px solid #e3e8ee;
+    }
+    .why-section h3 {
+      color: #2c3e50;
+      margin-top: 0;
+      font-size: 1.3em;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .why-section p {
+      color: #333;
+      line-height: 1.7;
+      font-size: 1.08em;
+    }
+    @media (max-width: 700px) {
+      .main-container, .navbar {
+        max-width: 98vw;
+        padding: 10px 2vw;
+      }
+      .team-member {
+        min-width: 80vw;
+        max-width: 80vw;
+      }
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+      .header-content .main-title {
+        font-size: 1.5em;
+      }
+      .header-content .main-subtitle {
+        font-size: 1em;
+      }
+      .main-container {
+        margin-top: -30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+  </div>
+  <div class="header-hero">
+    <div class="header-content">
+      <div class="main-title">Meet our beautiful team</div>
+      <div class="main-subtitle">
+        Our philosophy is simple: Ease is not apathy. It's presence without panic, action without anxiety.
+      </div>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="team-grid">
+      <div class="team-member">
+        <img src="John Narag.jpg" alt="John Narag" />
+        <div class="name">John Narag</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+      <div class="team-member">
+        <img src="Dave Perdon.jpg" alt="Dave Perdon" />
+        <div class="name">Dave Perdon</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+      <div class="team-member">
+        <img src="Prince Ulang.jpg" alt="Prince Ulang" />
+        <div class="name">Prince Ulang</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+      <div class="team-member">
+        <img src="Khayle Lozada.jpg" alt="Khayle Lozada" />
+        <div class="name">Khayle Lozada</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+      <div class="team-member">
+        <img src="Charls.jpg" alt="Charls Sacata" />
+        <div class="name">Charls Sacata</div>
+        <div class="role">Web Developer</div>
+      </div>
+      <div class="team-member">
+        <img src="John Cedrick Salvador.jpg" alt="John Cedrick Salvador" />
+        <div class="name">John Cedrick Salvador</div>
+        <div class="role">Leader</div>
+      </div>
+      <div class="team-member">
+        <img src="Maynard Santos.jpg" alt="Maynard Santos" />
+        <div class="name">Maynard Santos</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+      <div class="team-member">
+        <img src="Jared Penares.jpg" alt="Jared Peñares" />
+        <div class="name">Jared Peñares</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+      <div class="team-member">
+        <img src="Bruce Tuando.jpg" alt="Bruce Tuando" />
+        <div class="name">Bruce Tuando</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+      <div class="team-member">
+        <img src="James Paras.jpg" alt="James Paras" />
+        <div class="name">James Paras</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+      <div class="team-member">
+        <img src="Angelica Rodriguez.jpg" alt="Angelica Rodriguez" />
+        <div class="name">Angelica Rodriguez</div>
+        <div class="role">Co-Researcher</div>
+      </div>
+    </div>
+    <div class="why-section">
+      <h3>Why we created this web?</h3>
+      <p>
+        We created this web application to make attendance tracking simpler, faster, and more reliable for schools and organizations. Traditional methods like manual roll calls or paper based logs are time consuming and prone to errors. Our goal is to provide an efficient, user-friendly platform that streamlines the attendance process, reduces administrative workload, and ensures accurate record-keeping. By leveraging modern web technologies, we empower educators, staff, and parents to focus more on what truly matters: learning and collaboration.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
