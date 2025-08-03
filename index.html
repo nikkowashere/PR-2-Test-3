@@ -232,7 +232,16 @@
         <div id="dashboard" class="dashboard hidden">
           <h2>Attendance Dashboard (<span id="userRole"></span>)</h2>
           <div id="notification" class="hidden"></div>
-          <div id="recordPanel" class="hidden"></div>
+          <div id="recordPanel" class="hidden">
+            <label>Select Date:
+              <input type="date" id="attendanceDate" max="">
+            </label>
+            <button id="loadAttendanceBtn" onclick="loadAttendanceForm()">Load</button>
+            <div id="attendanceForm"></div>
+            <button id="saveAttendanceBtn" class="hidden" onclick="saveAttendance()">Save Record</button>
+            <button id="updateAttendanceBtn" class="hidden" onclick="updateAttendance()">Update Record</button>
+            <button id="deleteAttendanceBtn" class="hidden" onclick="deleteAttendance()">Delete Record</button>
+          </div>
           <div id="monthPanel" style="margin-top:24px;">
             <label>Select Month:
               <input type="month" id="monthSelect">
@@ -279,8 +288,14 @@
       }
 
       function loadRolePanel(role) {
-        document.getElementById("recordPanel").classList.remove("hidden");
-        document.getElementById("monthPanel").classList.remove("hidden");
+        // Show/hide recordPanel and monthPanel based on role
+        if (role === "parent") {
+          document.getElementById("recordPanel").classList.add("hidden");
+          document.getElementById("monthPanel").classList.remove("hidden");
+        } else {
+          document.getElementById("recordPanel").classList.remove("hidden");
+          document.getElementById("monthPanel").classList.remove("hidden");
+        }
         // Set max date to today for secretary, unlimited for teacher
         const dateInput = document.getElementById("attendanceDate");
         const today = new Date().toISOString().split("T")[0];
@@ -295,14 +310,6 @@
         document.getElementById("updateAttendanceBtn").classList.add("hidden");
         document.getElementById("deleteAttendanceBtn").classList.add("hidden");
         document.getElementById("monthRecords").innerHTML = "";
-        if (role === "parent") {
-          // Hide recordPanel for parent, only show monthPanel
-          document.getElementById("recordPanel").classList.add("hidden");
-          document.getElementById("monthPanel").classList.remove("hidden");
-        } else {
-          document.getElementById("recordPanel").classList.remove("hidden");
-          document.getElementById("monthPanel").classList.remove("hidden");
-        }
       }
 
       function clearAttendanceUI() {
